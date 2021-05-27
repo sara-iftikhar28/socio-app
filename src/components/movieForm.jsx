@@ -8,9 +8,6 @@ class MovieForm extends Form {
   state = {
     data: {
       title: "",
-      genreId: "",
-      numberInStock: "",
-      dailyRentalRate: "",
     },
     genres: [],
     errors: {},
@@ -19,9 +16,6 @@ class MovieForm extends Form {
   schema = {
     _id: Joi.string(),
     title: Joi.string().required(),
-    genreId: Joi.string().required(),
-    numberInStock: Joi.number().min(0).max(100).required(),
-    dailyRentalRate: Joi.number().min(0).max(100).required(),
   };
 
   componentDidMount() {
@@ -41,9 +35,6 @@ class MovieForm extends Form {
     return {
       _id: movie._id,
       title: movie.title,
-      genreId: movie.genre._id,
-      numberInStock: movie.numberInStock,
-      dailyRentalRate: movie.dailyRentalRate,
     };
   };
 
@@ -58,9 +49,6 @@ class MovieForm extends Form {
         <h1>Movie Form</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title")}
-          {this.renderSelect("genreId", "Genre", this.state.genres)}
-          {this.renderInput("numberInStock", "Number in Stock", "number")}
-          {this.renderInput("dailyRentalRate", "Rate", "number")}
 
           {this.renderButton("Save")}
         </form>

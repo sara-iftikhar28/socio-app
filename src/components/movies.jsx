@@ -1,26 +1,29 @@
 import React, { Component } from "react";
-import { getMovies } from "../services/fakeMovieService";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
-import ListGroup from "./common/listgroup";
 import { getGenres } from "../services/fakeGenreService";
 import _ from "lodash";
 import MoviesTable from "./moviesTable";
 import { Link } from "react-router-dom";
+import http from "../services/httpService";
+import config from "../config.json";
+import "../App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 class Movies extends Component {
   state = {
     movies: [],
-    pageSize: 4,
+    pageSize: 10,
     currentPage: 1,
     genres: [],
     sortedColumn: { path: "title", order: "asc" },
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const genres = [{ name: "All Movies", _id: "" }, ...getGenres()];
+    const { data: posts } = await http.get(config.apiEndpoint);
     this.setState({
-      movies: getMovies(),
+      movies: posts,
       genres,
       selectedGenre: genres[0],
     });
@@ -91,14 +94,7 @@ class Movies extends Component {
     return (
       <React.Fragment>
         <div className="row">
-          <div className="col-sm-4">
-            <ListGroup
-              items={genres}
-              selectedItem={selectedGenre}
-              onItemSelect={this.handleGenreSelect}
-            ></ListGroup>
-          </div>
-          <div className="col-sm-8">
+          <div className="col-sm-10">
             <Link
               to="/movies/new"
               className="btn btn-primary"
