@@ -1,7 +1,6 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import { Redirect } from "react-router-dom";
 import http from "../services/httpService";
 import config from "../config.json";
 import { getMovie } from "../services/fakeMovieService";

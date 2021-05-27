@@ -27,7 +27,7 @@ class Posts extends Component {
   }
 
   handleDelete = (id) => {
-    const posts = this.state.posts.filter((post) => post._id !== id);
+    const posts = this.state.posts.filter((post) => post.id !== id);
     this.setState({
       posts,
     });
