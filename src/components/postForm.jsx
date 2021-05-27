@@ -14,7 +14,8 @@ class PostForm extends Form {
   };
 
   schema = {
-    id: Joi.string(),
+    id: Joi.number(),
+    userId: Joi.number(),
     title: Joi.string().required(),
     body: Joi.string().required(),
   };
@@ -34,10 +35,23 @@ class PostForm extends Form {
       id: post.id,
       title: post.title,
       body: post.body,
+      userId: post.userId,
     };
   };
 
   doSubmit = async () => {
+    const postId = this.props.match.params.id;
+    if (postId) {
+      const { data: post } = await http.put(
+        config.apiEndpoint + "/" + postId,
+        this.state.data
+      );
+      return this.props.history.push({
+        pathname: "/posts",
+        post: post,
+      });
+    }
+
     const { data: post } = await http.post(config.apiEndpoint, this.state.data);
     return this.props.history.push({
       pathname: "/posts",

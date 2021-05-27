@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
-import _ from "lodash";
+import _, { indexOf } from "lodash";
 import PostsTable from "./postsTable";
 import { Link } from "react-router-dom";
 import http from "../services/httpService";
@@ -22,15 +22,21 @@ class Posts extends Component {
     this.setState({
       posts: posts,
     });
+    this.getUpdatePosts();
+  }
 
+  getUpdatePosts = () => {
     const { post } = this.props.location;
     if (post) {
-      const posts = [post, ...this.state.posts];
+      const posts = [...this.state.posts];
+      const index = posts.indexOf(post);
+      const updatedPosts =
+        index > 0 ? (posts[index] = post) : [post, ...this.state.posts];
       this.setState({
-        posts,
+        posts: updatedPosts,
       });
     }
-  }
+  };
 
   handleDelete = (id) => {
     const posts = this.state.posts.filter((post) => post.id !== id);
