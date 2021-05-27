@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
-import _, { indexOf } from "lodash";
+import _ from "lodash";
 import PostsTable from "./postsTable";
 import { Link } from "react-router-dom";
-import http from "../services/httpService";
-import config from "../config.json";
 import "../App.css";
 import "react-toastify/dist/ReactToastify.css";
+import * as postService from "../services/postService";
+import { toast } from "react-toastify";
 
 class Posts extends Component {
   state = {
@@ -18,7 +18,7 @@ class Posts extends Component {
   };
 
   async componentDidMount() {
-    const { data: posts } = await http.get(config.apiEndpoint);
+    const { data: posts } = await postService.getPosts();
     this.setState({
       posts: posts,
     });
@@ -38,11 +38,20 @@ class Posts extends Component {
     }
   };
 
-  handleDelete = (id) => {
+  handleDelete = async (id) => {
+    const originalPosts = this.state.posts;
     const posts = this.state.posts.filter((post) => post.id !== id);
     this.setState({
       posts,
     });
+
+    try {
+      await postService.deletePost(id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        toast.error("Post has already been deleted");
+      this.setState({ posts: originalPosts });
+    }
   };
 
   handleUpdate = (id) => {

@@ -1,8 +1,7 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import http from "../services/httpService";
-import config from "../config.json";
+import postService from "../services/postService";
 
 class PostForm extends Form {
   state = {
@@ -24,7 +23,7 @@ class PostForm extends Form {
     if (this.props.match.path === "/posts/new") return;
     const postId = this.props.match.params.id;
 
-    const { data: post } = await http.get(config.apiEndpoint + "/" + postId);
+    const { data: post } = await postService.getPost(postId);
     if (!post) return this.props.history.replace("/not-found");
 
     this.setState({ data: this.mapToViewModel(post) });
@@ -42,17 +41,14 @@ class PostForm extends Form {
   doSubmit = async () => {
     const postId = this.props.match.params.id;
     if (postId) {
-      const { data: post } = await http.put(
-        config.apiEndpoint + "/" + postId,
-        this.state.data
-      );
+      const { data: post } = await postService.updatePost(this.state.data);
       return this.props.history.push({
         pathname: "/posts",
         post: post,
       });
     }
 
-    const { data: post } = await http.post(config.apiEndpoint, this.state.data);
+    const { data: post } = await postService.savePost(this.state.data);
     return this.props.history.push({
       pathname: "/posts",
       post: post,
