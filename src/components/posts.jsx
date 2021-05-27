@@ -33,6 +33,10 @@ class Posts extends Component {
     });
   };
 
+  handleUpdate = (id) => {
+    this.props.history.push(`/posts/${id}`);
+  };
+
   handlePageChange = (page) => {
     this.setState({
       currentPage: page,
@@ -73,6 +77,7 @@ class Posts extends Component {
             <p>Showing {allPosts.length} posts in the database</p>
             <PostsTable
               onDelete={this.handleDelete}
+              onUpdate={this.handleUpdate}
               posts={posts}
               onSort={this.handleSort}
               sortedColumn={sortedColumn}

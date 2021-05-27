@@ -20,11 +20,11 @@ class PostForm extends Form {
     body: Joi.string().required(),
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.match.path === "/posts/new") return;
     const postId = this.props.match.params.id;
 
-    const post = getMovie(postId);
+    const { data: post } = await http.get(config.apiEndpoint + "/" + postId);
     if (!post) return this.props.history.replace("/not-found");
 
     this.setState({ data: this.mapToViewModel(post) });
@@ -34,6 +34,7 @@ class PostForm extends Form {
     return {
       id: post.id,
       title: post.title,
+      body: post.body,
     };
   };
 

@@ -2,10 +2,24 @@ import React, { Component } from "react";
 import Table from "./common/table";
 import TableHeader from "./common/tableHeader";
 import TableBody from "./common/tableBody";
+import { Link, Redirect } from "react-router-dom";
 
 class PostsTable extends Component {
   columns = [
     { name: "Title", path: "title" },
+    {
+      key: "update",
+      content: (post) => (
+        <button
+          onClick={() => {
+            this.props.onUpdate(post.id);
+          }}
+          className="btn btn-primary btn-sm"
+        >
+          Update
+        </button>
+      ),
+    },
     {
       key: "delete",
       content: (post) => (
