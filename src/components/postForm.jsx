@@ -3,7 +3,6 @@ import Form from "./common/form";
 import Joi from "joi-browser";
 import http from "../services/httpService";
 import config from "../config.json";
-import { getMovie } from "../services/fakeMovieService";
 
 class PostForm extends Form {
   state = {
@@ -38,9 +37,12 @@ class PostForm extends Form {
     };
   };
 
-  doSubmit = () => {
-    const { data: post } = http.post(config.apiEndpoint, this.state.data);
-    // return <Redirect to={{ pathname: "/posts", data: { post } }} />;
+  doSubmit = async () => {
+    const { data: post } = await http.post(config.apiEndpoint, this.state.data);
+    return this.props.history.push({
+      pathname: "/posts",
+      post: post,
+    });
   };
 
   render() {

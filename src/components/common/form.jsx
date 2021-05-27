@@ -44,7 +44,7 @@ class Form extends Component {
     //prevent page reload
     e.preventDefault();
     const errors = this.validate();
-    this.setState({ errors });
+    this.setState({ errors: errors || {} });
     if (errors) return;
 
     //Call to Server

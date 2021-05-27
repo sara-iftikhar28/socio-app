@@ -23,7 +23,13 @@ class Posts extends Component {
       posts: posts,
     });
 
-    console.log(this.props);
+    const { post } = this.props.location;
+    if (post) {
+      const posts = [post, ...this.state.posts];
+      this.setState({
+        posts,
+      });
+    }
   }
 
   handleDelete = (id) => {
