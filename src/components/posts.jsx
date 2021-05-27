@@ -8,12 +8,14 @@ import "../App.css";
 import "react-toastify/dist/ReactToastify.css";
 import * as postService from "../services/postService";
 import { toast } from "react-toastify";
+import SearchBox from "./common/searchBox";
 
 class Posts extends Component {
   state = {
     posts: [],
     pageSize: 10,
     currentPage: 1,
+    searchQuery: "",
     sortedColumn: { path: "title", order: "asc" },
   };
 
@@ -70,14 +72,31 @@ class Posts extends Component {
     });
   };
 
+  handleSearch = (query) => {
+    this.setState({ searchQuery: query, currentPage: 1 });
+  };
+
   render() {
     const { length: count } = this.state.posts;
-    const { pageSize, currentPage, posts: allPosts, sortedColumn } = this.state;
+    const {
+      pageSize,
+      currentPage,
+      posts: allPosts,
+      sortedColumn,
+      searchQuery,
+    } = this.state;
 
     if (count === 0) return <p>There are no posts in the database</p>;
 
+    let filtered = allPosts;
+    if (searchQuery) {
+      filtered = allPosts.filter((x) =>
+        x.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    }
+
     const sorted = _.orderBy(
-      allPosts,
+      filtered,
       [sortedColumn.path],
       [sortedColumn.order]
     );
@@ -95,7 +114,11 @@ class Posts extends Component {
             >
               New Post
             </Link>
-            <p>Showing {allPosts.length} posts in the database</p>
+            <p>Showing {filtered.length} posts in the database</p>
+            <SearchBox
+              value={searchQuery}
+              onChange={this.handleSearch}
+            ></SearchBox>
             <PostsTable
               onDelete={this.handleDelete}
               onUpdate={this.handleUpdate}
@@ -104,7 +127,7 @@ class Posts extends Component {
               sortedColumn={sortedColumn}
             ></PostsTable>
             <Pagination
-              itemCount={allPosts.length}
+              itemCount={filtered.length}
               pageSize={pageSize}
               onPageChange={this.handlePageChange}
               currentPage={currentPage}

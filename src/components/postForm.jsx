@@ -20,15 +20,21 @@ class PostForm extends Form {
   };
 
   async componentDidMount() {
-    if (this.props.match.path === "/posts/new") return;
-    const postId = this.props.match.params.id;
-
-    const { data: post } = await postService.getPost(postId);
-    if (!post) return this.props.history.replace("/not-found");
-
-    this.setState({ data: this.mapToViewModel(post) });
+    this.populatePost();
   }
 
+  async populatePost() {
+    try {
+      if (this.props.match.path === "/posts/new") return;
+      const postId = this.props.match.params.id;
+
+      const { data: post } = await postService.getPost(postId);
+      this.setState({ data: this.mapToViewModel(post) });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        this.props.history.replace("/not-found");
+    }
+  }
   mapToViewModel = (post) => {
     return {
       id: post.id,
@@ -39,15 +45,6 @@ class PostForm extends Form {
   };
 
   doSubmit = async () => {
-    const postId = this.props.match.params.id;
-    if (postId) {
-      const { data: post } = await postService.updatePost(this.state.data);
-      return this.props.history.push({
-        pathname: "/posts",
-        post: post,
-      });
-    }
-
     const { data: post } = await postService.savePost(this.state.data);
     return this.props.history.push({
       pathname: "/posts",

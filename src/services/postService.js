@@ -12,15 +12,16 @@ export function getPosts() {
 }
 
 export function getPost(postId) {
-  return http.get(postUrl());
+  return http.get(postUrl(postId));
 }
 
 export function savePost(post) {
+  if (post.id) {
+    const body = { ...post };
+    delete body.id;
+    return http.post(postUrl(post.id), body);
+  }
   return http.post(apiEndpoint, post);
-}
-
-export function updatePost(post) {
-  return http.put(postUrl(post.id), post);
 }
 
 export function deletePost(id) {
@@ -31,6 +32,5 @@ export default {
   getPosts,
   getPost,
   savePost,
-  updatePost,
   deletePost,
 };
