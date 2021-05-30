@@ -86,6 +86,7 @@ class Posts extends Component {
       searchQuery,
     } = this.state;
 
+    const { user } = this.props;
     if (count === 0) return <p>There are no posts in the database</p>;
 
     let filtered = allPosts;
@@ -107,13 +108,15 @@ class Posts extends Component {
       <React.Fragment>
         <div className="row">
           <div className="col-sm-10">
-            <Link
-              to="/posts/new"
-              className="btn btn-primary"
-              style={{ marginTop: "20px" }}
-            >
-              New Post
-            </Link>
+            {user && (
+              <Link
+                to="/posts/new"
+                className="btn btn-primary"
+                style={{ marginTop: "20px" }}
+              >
+                New Post
+              </Link>
+            )}
             <p>Showing {filtered.length} posts in the database</p>
             <SearchBox
               value={searchQuery}
