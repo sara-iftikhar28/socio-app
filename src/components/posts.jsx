@@ -13,19 +13,19 @@ import ErrorBoundary from "./common/errorBoundary";
 
 function Posts(props) {
   const [posts, setPosts] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortedColumn, setSortedColumn] = useState({
     path: "title",
     order: "asc",
   });
+  const pageSize = 10;
 
   useEffect(() => {
     try {
       getPosts();
     } catch (ex) {}
-  }, []);
+  });
 
   const getPosts = async () => {
     const { data } = await postService.getPosts();

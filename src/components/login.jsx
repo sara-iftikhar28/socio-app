@@ -4,7 +4,7 @@ import Form from "./common/form";
 import auth from "../services/authService";
 import authService from "../services/authService";
 import { Redirect } from "react-router";
-import { Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 
 class LoginForm extends Form {
   state = {
@@ -42,10 +42,16 @@ class LoginForm extends Form {
           Login
         </Typography>
         <form autoComplete="off" onSubmit={this.handleSubmit}>
-          {this.renderInput("username", "Username")}
-          {this.renderInput("password", "Password", "password")}
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                {this.renderInput("username", "Username")}
+                {this.renderInput("password", "Password", "password")}
 
-          {this.renderButton("Login")}
+                {this.renderButton("Login")}
+              </Grid>
+            </Grid>
+          </Grid>
         </form>
       </React.Fragment>
     );

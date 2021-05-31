@@ -28,9 +28,10 @@ export function deletePost(id) {
   return http.delete(postUrl(id));
 }
 
-export default {
+const postService = {
   getPosts,
   getPost,
   savePost,
   deletePost,
 };
+export default postService;

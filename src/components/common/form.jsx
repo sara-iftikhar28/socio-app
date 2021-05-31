@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
 import Select from "./select";
-import { Button } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 
 class Form extends Component {
   state = {
@@ -55,14 +55,16 @@ class Form extends Component {
 
   renderButton = (label) => {
     return (
-      <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        disabled={this.validate() != null ? true : false}
-      >
-        {label}
-      </Button>
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          disabled={this.validate() != null ? true : false}
+        >
+          {label}
+        </Button>
+      </Grid>
     );
   };
 
