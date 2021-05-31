@@ -1,19 +1,18 @@
+import { TextField } from "@material-ui/core";
 import React from "react";
 
 const Select = ({ name, label, error, options, ...rest }) => {
   return (
     <div className="mb-3">
-      <label htmlFor={name} className="form-label">
-        {label}
-      </label>
-      <select className="form-control" name={name} id={name} {...rest}>
+      <TextField name={name} id={name} {...rest} variant="outlined">
         <option>Type to select</option>
-        {options.map((x) => (
-          <option key={x.id} value={x.id}>
-            {x.name}
+
+        {options.map((option) => (
+          <option key={option.id} value={option.id}>
+            {option.name}
           </option>
         ))}
-      </select>
+      </TextField>
       {error && <div className="alert alert-danger">{error}</div>}
     </div>
   );

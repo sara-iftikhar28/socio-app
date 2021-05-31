@@ -1,6 +1,6 @@
 import React from "react";
 import TableHeader from "./tableBody";
-import TableBody from "./tableBody";
+import TableBody1 from "./tableBody";
 
 const Table = ({ data, sortedColumn, onSort, columns }) => {
   return (
@@ -10,7 +10,7 @@ const Table = ({ data, sortedColumn, onSort, columns }) => {
         sortedColumn={sortedColumn}
         onSort={onSort}
       ></TableHeader>
-      <TableBody data={data} columns={columns}></TableBody>
+      <TableBody1 data={data} columns={columns}></TableBody1>
     </table>
   );
 };

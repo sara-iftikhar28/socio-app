@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { TableCell, TableBody, TableRow } from "@material-ui/core";
 import _ from "lodash";
 
-class TableBody extends Component {
+class TableBody1 extends Component {
   renderCell = (item, column) => {
     if (column.content) return column.content(item);
     return _.get(item, column.path);
@@ -14,20 +15,20 @@ class TableBody extends Component {
   render() {
     const { data, columns } = this.props;
     return (
-      <tbody>
+      <TableBody>
         {data &&
           data.map((item) => (
-            <tr key={item.id}>
+            <TableRow key={item.id}>
               {columns.map((x) => (
-                <td key={this.createKey(item, x)}>
+                <TableCell key={this.createKey(item, x)}>
                   {this.renderCell(item, x)}
-                </td>
+                </TableCell>
               ))}
-            </tr>
+            </TableRow>
           ))}
-      </tbody>
+      </TableBody>
     );
   }
 }
 
-export default TableBody;
+export default TableBody1;

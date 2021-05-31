@@ -4,6 +4,7 @@ import Form from "./common/form";
 import auth from "../services/authService";
 import authService from "../services/authService";
 import { Redirect } from "react-router";
+import { Typography } from "@material-ui/core";
 
 class LoginForm extends Form {
   state = {
@@ -12,8 +13,8 @@ class LoginForm extends Form {
   };
 
   schema = {
-    username: Joi.string().required(),
-    password: Joi.string().required(),
+    username: Joi.string().email().required(),
+    password: Joi.string().min(5).required(),
   };
 
   doSubmit = async () => {
@@ -37,8 +38,10 @@ class LoginForm extends Form {
     if (authService.getCurrentUser()) return <Redirect to="/"></Redirect>;
     return (
       <React.Fragment>
-        <h1>Login</h1>
-        <form onSubmit={this.handleSubmit}>
+        <Typography variant="h5" gutterBottom>
+          Login
+        </Typography>
+        <form autoComplete="off" onSubmit={this.handleSubmit}>
           {this.renderInput("username", "Username")}
           {this.renderInput("password", "Password", "password")}
 

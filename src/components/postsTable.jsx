@@ -1,18 +1,23 @@
-import React, { Component } from "react";
+import React from "react";
 import Table from "./common/table";
-import TableHeader from "./common/tableHeader";
-import TableBody from "./common/tableBody";
-import { Link, Redirect } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import { Paper, TableContainer } from "@material-ui/core";
 
-class PostsTable extends Component {
-  columns = [
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
+
+const PostsTable = ({ posts, sortedColumn, onSort, onDelete, onUpdate }) => {
+  const columns = [
     { name: "Title", path: "title" },
     {
       key: "update",
       content: (post) => (
         <button
           onClick={() => {
-            this.props.onUpdate(post.id);
+            onUpdate(post.id);
           }}
           className="btn btn-primary btn-sm"
         >
@@ -25,7 +30,7 @@ class PostsTable extends Component {
       content: (post) => (
         <button
           onClick={() => {
-            this.props.onDelete(post.id);
+            onDelete(post.id);
           }}
           className="btn btn-danger btn-sm"
         >
@@ -34,25 +39,19 @@ class PostsTable extends Component {
       ),
     },
   ];
-  render() {
-    const { posts, sortedColumn, onSort } = this.props;
-    return (
+  const classes = useStyles();
+
+  return (
+    <TableContainer component={Paper}>
       <Table
+        className={classes.table}
         data={posts}
         sortedColumn={sortedColumn}
         onSort={onSort}
-        columns={this.columns}
+        columns={columns}
       ></Table>
-      // <table className="table">
-      //   <TableHeader
-      //     columns={this.columns}
-      //     sortedColumn={sortedColumn}
-      //     onSort={onSort}
-      //   ></TableHeader>
-      //   <TableBody data={posts} columns={this.columns}></TableBody>
-      // </table>
-    );
-  }
-}
+    </TableContainer>
+  );
+};
 
 export default PostsTable;

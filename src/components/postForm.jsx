@@ -56,7 +56,7 @@ class PostForm extends Form {
     return (
       <React.Fragment>
         <h1>Post Form</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form autoComplete="off" onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title")}
           {this.renderInput("body", "Body")}
           {this.renderButton("Save")}

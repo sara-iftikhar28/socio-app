@@ -22,7 +22,7 @@ class RegisterForm extends Form {
     return (
       <React.Fragment>
         <h1>Register Form</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form autoComplete="off" onSubmit={this.handleSubmit}>
           {this.renderInput("username", "Username")}
           {this.renderInput("password", "Password", "password")}
           {this.renderInput("user", "Name")}
