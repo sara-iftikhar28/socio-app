@@ -1,7 +1,7 @@
 import React from "react";
-import Table from "./common/table";
+import Table1 from "./common/table";
 import { makeStyles } from "@material-ui/core/styles";
-import { Paper, TableContainer } from "@material-ui/core";
+import { Button, Paper, Table, TableContainer } from "@material-ui/core";
 
 const useStyles = makeStyles({
   table: {
@@ -15,27 +15,31 @@ const PostsTable = ({ posts, sortedColumn, onSort, onDelete, onUpdate }) => {
     {
       key: "update",
       content: (post) => (
-        <button
+        <Button
+          style={{ maxHeight: "30px" }}
+          variant="outlined"
+          color="primary"
           onClick={() => {
             onUpdate(post.id);
           }}
-          className="btn btn-primary btn-sm"
         >
           Update
-        </button>
+        </Button>
       ),
     },
     {
       key: "delete",
       content: (post) => (
-        <button
+        <Button
+          style={{ maxHeight: "30px" }}
           onClick={() => {
             onDelete(post.id);
           }}
-          className="btn btn-danger btn-sm"
+          variant="outlined"
+          color="secondary"
         >
           Delete
-        </button>
+        </Button>
       ),
     },
   ];
@@ -43,13 +47,15 @@ const PostsTable = ({ posts, sortedColumn, onSort, onDelete, onUpdate }) => {
 
   return (
     <TableContainer component={Paper}>
-      <Table
-        className={classes.table}
-        data={posts}
-        sortedColumn={sortedColumn}
-        onSort={onSort}
-        columns={columns}
-      ></Table>
+      <Table className={classes.table}>
+        <Table1
+          className={classes.table}
+          data={posts}
+          sortedColumn={sortedColumn}
+          onSort={onSort}
+          columns={columns}
+        ></Table1>
+      </Table>
     </TableContainer>
   );
 };

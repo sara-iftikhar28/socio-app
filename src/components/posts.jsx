@@ -10,6 +10,24 @@ import * as postService from "../services/postService";
 import { toast } from "react-toastify";
 import SearchBox from "./common/searchBox";
 import ErrorBoundary from "./common/errorBoundary";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button, Container, Grid, Paper } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+    background: "#cccccc3b",
+  },
+  margin: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
+}));
 
 function Posts(props) {
   const [posts, setPosts] = useState([]);
@@ -25,20 +43,28 @@ function Posts(props) {
     try {
       getPosts();
     } catch (ex) {}
-  });
+  }, [setPosts]);
 
   const getPosts = async () => {
-    const { data } = await postService.getPosts();
-    setPosts(data);
-    getUpdatePosts(data);
+    try {
+      const { data } = await postService.getPosts();
+      setPosts(data);
+      getUpdatePosts(data);
+    } catch (ex) {}
   };
 
   const getUpdatePosts = (data) => {
     const { post } = props.location;
     if (post) {
       const posts = [...data];
-      const index = posts.indexOf(post);
-      const updatedPosts = index > 0 ? (posts[index] = post) : [post, ...posts];
+      const index = posts.findIndex((x) => x.id === post.id);
+      const updatedPosts =
+        index > 0
+          ? () => {
+              posts[index] = post;
+              return posts;
+            }
+          : [post, ...posts];
       setPosts(updatedPosts);
     }
   };
@@ -50,6 +76,7 @@ function Posts(props) {
 
     try {
       await postService.deletePost(id);
+      toast.success("Post deleted Successfully");
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
         toast.error("Post has already been deleted");
@@ -99,42 +126,62 @@ function Posts(props) {
 
   const { data } = getPagedData();
 
+  const classes = useStyles();
+
   return (
     <React.Fragment>
-      <div className="row">
-        <div className="col-sm-10">
+      <Container component="main" maxWidth="lg">
+        <div className={classes.root}>
           {user && (
-            <Link
+            <Button
+              className={classes.margin}
+              variant="contained"
+              color="primary"
               to="/posts/new"
-              className="btn btn-primary"
-              style={{ marginTop: "20px" }}
+              component={Link}
+              margin="normal"
             >
               New Post
-            </Link>
+            </Button>
           )}
-          <p>Showing {posts.length} posts in the database</p>
-          <ErrorBoundary>
-            <SearchBox value={searchQuery} onChange={handleSearch}></SearchBox>
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <PostsTable
-              onDelete={handleDelete}
-              onUpdate={handleUpdate}
-              posts={data}
-              onSort={handleSort}
-              sortedColumn={sortedColumn}
-            ></PostsTable>
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <Pagination
-              itemCount={posts.length}
-              pageSize={pageSize}
-              onPageChange={handlePageChange}
-              currentPage={currentPage}
-            ></Pagination>
-          </ErrorBoundary>
+
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <ErrorBoundary>
+                  <PostsTable
+                    onDelete={handleDelete}
+                    onUpdate={handleUpdate}
+                    posts={data}
+                    onSort={handleSort}
+                    sortedColumn={sortedColumn}
+                  ></PostsTable>
+                </ErrorBoundary>
+                <Grid container spacing={3}>
+                  <Grid item xs={6}>
+                    <ErrorBoundary>
+                      <SearchBox
+                        value={searchQuery}
+                        onChange={handleSearch}
+                      ></SearchBox>
+                    </ErrorBoundary>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <ErrorBoundary>
+                      <Pagination
+                        itemCount={posts.length}
+                        pageSize={pageSize}
+                        onPageChange={handlePageChange}
+                        currentPage={currentPage}
+                      ></Pagination>
+                    </ErrorBoundary>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+          </Grid>
         </div>
-      </div>
+      </Container>
     </React.Fragment>
   );
 }

@@ -1,3 +1,4 @@
+import { TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
 import React, { Component } from "react";
 
 class TableHeader extends Component {
@@ -23,15 +24,20 @@ class TableHeader extends Component {
   render() {
     const { columns } = this.props;
     return (
-      <thead>
-        <tr>
+      <TableHead display="grid">
+        <TableRow style={{ background: "lightgray" }}>
           {columns.map((x) => (
-            <th key={x.path || x.key} onClick={() => this.raiseSort(x.path)}>
-              {x.name} {this.renderSortIcon(x)}
-            </th>
+            <TableCell
+              key={x.path || x.key}
+              onClick={() => this.raiseSort(x.path)}
+            >
+              <Typography variant="subtitle1">
+                {x.name} {this.renderSortIcon(x)}
+              </Typography>
+            </TableCell>
           ))}
-        </tr>
-      </thead>
+        </TableRow>
+      </TableHead>
     );
   }
 }

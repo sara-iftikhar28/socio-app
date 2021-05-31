@@ -42,6 +42,10 @@ class App extends Component {
               }}
             ></Route>
             <ProtectedRoute
+              path="/posts/detail/:id"
+              component={PostForm}
+            ></ProtectedRoute>
+            <ProtectedRoute
               path="/posts/:id"
               component={PostForm}
             ></ProtectedRoute>

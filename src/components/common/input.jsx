@@ -1,19 +1,20 @@
 import React from "react";
-import { Grid, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 
 const Input = ({ name, label, error, ...rest }) => {
   return (
-    <Grid item xs={12}>
-      <TextField
-        label={label}
-        variant="outlined"
-        name={name}
-        id={name}
-        {...rest}
-        helperText={error ? error : null}
-        error={error}
-      />
-    </Grid>
+    <TextField
+      margin="normal"
+      fullWidth
+      label={label}
+      variant="outlined"
+      name={name}
+      id={name}
+      autoComplete={label}
+      {...rest}
+      helperText={error ? error : null}
+      error={error}
+    />
   );
 };
 

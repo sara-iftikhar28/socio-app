@@ -1,26 +1,38 @@
-import { Button } from "@material-ui/core";
+import { AppBar, Box, Button, Toolbar, Typography } from "@material-ui/core";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
 
 const Navbar = ({ user }) => {
+  const classes = useStyles();
   return (
-    <nav className="navbar navbar-dark bg-dark justify-content-between">
-      <Button className="navbar-brand">Socio</Button>
-
-      <ul className="navbar-nav mr-auto">
-        <li className="nav-item">
-          {user && (
-            <NavLink className="nav-link" to="/logout">
+    <AppBar position="static">
+      <Toolbar>
+        <Typography variant="h6" className={classes.title}>
+          Socio
+        </Typography>
+        {user && (
+          <React.Fragment>
+            <Box component="span">{user} | </Box>
+            <Button color="inherit" component={Link} to="/logout">
               Logout
-            </NavLink>
-          )}
-        </li>
-      </ul>
-
-      <span className="pull-right nav-item nav-link text-light" href="#">
-        {user}
-      </span>
-    </nav>
+            </Button>
+          </React.Fragment>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 
