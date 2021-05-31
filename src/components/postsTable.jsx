@@ -37,20 +37,20 @@ class PostsTable extends Component {
   render() {
     const { posts, sortedColumn, onSort } = this.props;
     return (
-      // <Table
-      //   data={posts}
-      //   sortedColumn={sortedColumn}
-      //   onSort={onSort}
-      //   columns={this.columns}
-      // ></Table>
-      <table className="table">
-        <TableHeader
-          columns={this.columns}
-          sortedColumn={sortedColumn}
-          onSort={onSort}
-        ></TableHeader>
-        <TableBody data={posts} columns={this.columns}></TableBody>
-      </table>
+      <Table
+        data={posts}
+        sortedColumn={sortedColumn}
+        onSort={onSort}
+        columns={this.columns}
+      ></Table>
+      // <table className="table">
+      //   <TableHeader
+      //     columns={this.columns}
+      //     sortedColumn={sortedColumn}
+      //     onSort={onSort}
+      //   ></TableHeader>
+      //   <TableBody data={posts} columns={this.columns}></TableBody>
+      // </table>
     );
   }
 }

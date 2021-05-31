@@ -19,7 +19,7 @@ export function savePost(post) {
   if (post.id) {
     const body = { ...post };
     delete body.id;
-    return http.post(postUrl(post.id), body);
+    return http.put(postUrl(post.id), body);
   }
   return http.post(apiEndpoint, post);
 }
